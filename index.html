@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROJECT YOUTUBE AI</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #0b0d12;
+  color: #f1f1f1;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+header {
+  padding: 20px 0;
+  border-bottom: 1px solid #292d38;
+}
+
+header h1 {
+  color: #ff3535;
+  font-size: 25px;
+}
+
+header p {
+  color: #9298a5;
+  margin-top: 8px;
+}
+
+.status {
+  margin: 20px 0;
+  padding: 18px;
+  background: #151923;
+  border-radius: 12px;
+}
+
+.online {
+  color: #45d483;
+  margin-top: 10px;
+}
+
+h2 {
+  font-size: 19px;
+  margin: 25px 0 15px;
+}
+
+.modules {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.card {
+  background: #151923;
+  border: 1px solid #292d38;
+  border-radius: 12px;
+  padding: 18px 12px;
+  min-height: 110px;
+}
+
+.card h3 {
+  font-size: 15px;
+  margin-bottom: 9px;
+}
+
+.card p {
+  color: #9298a5;
+  font-size: 12px;
+}
+
+button {
+  background: #ff3535;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  width: 100%;
+  margin-top: 15px;
+  font-size: 15px;
+}
+
+button:active {
+  opacity: 0.7;
+}
+
+#output {
+  background: #151923;
+  padding: 18px;
+  margin-top: 15px;
+  border-radius: 12px;
+  min-height: 70px;
+  color: #b8c0ce;
+  line-height: 1.6;
+}
+
+footer {
+  text-align: center;
+  color: #626978;
+  margin-top: 35px;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>PROJECT YOUTUBE AI</h1>
+  <p>Autonomous YouTube Management System</p>
+</header>
+
+<div class="status">
+  <h3>System Status</h3>
+  <p class="online">● Dashboard initialized</p>
+  <p style="color:#9298a5;margin-top:8px">
+    AI Backend: Not connected
+  </p>
+</div>
+
+<h2>AI CONTROL CENTER</h2>
+
+<div class="modules">
+
+  <div class="card">
+    <h3>Research AI</h3>
+    <p>Trending topics and research</p>
+  </div>
+
+  <div class="card">
+    <h3>Script AI</h3>
+    <p>Automatic script generation</p>
+  </div>
+
+  <div class="card">
+    <h3>Video AI</h3>
+    <p>Video production workflow</p>
+  </div>
+
+  <div class="card">
+    <h3>YouTube Manager</h3>
+    <p>Channel management</p>
+  </div>
+
+  <div class="card">
+    <h3>Analytics AI</h3>
+    <p>Views and performance analysis</p>
+  </div>
+
+  <div class="card">
+    <h3>Strategy AI</h3>
+    <p>Growth and monetization strategy</p>
+  </div>
+
+</div>
+
+<h2>COMMAND CENTER</h2>
+
+<button onclick="runSystem()">
+  INITIALIZE AI SYSTEM
+</button>
+
+<div id="output">
+  Waiting for command...
+</div>
+
+<footer>
+  PROJECT YOUTUBE AI | VERSION 1.0
+</footer>
+
+<script>
+function runSystem() {
+  const output = document.getElementById("output");
+
+  output.innerHTML = `
+    System initialized successfully.<br>
+    Dashboard: ACTIVE<br>
+    Research AI: WAITING<br>
+    Script AI: WAITING<br>
+    Video AI: WAITING<br>
+    Backend: NOT CONNECTED<br><br>
+    Next step: Connect AI backend.
+  `;
+}
+</script>
+
+</body>
+</html>
