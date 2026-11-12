@@ -1,12 +1,13 @@
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
+from backend.ai_gateway import ai_gateway
 
 app = FastAPI(
     title="PROJECT YOUTUBE AI",
-    description="AI-powered YouTube automation system",
-    version="1.0.0"
+    version="2.0.0"
 )
 
 app.add_middleware(
@@ -17,43 +18,70 @@ app.add_middleware(
 )
 
 class ScriptRequest(BaseModel):
-    topic: str
+    topic: str = Field(min_length=3)
     language: str = "English"
-    duration: int = 60
+    duration: int = Field(default=60, ge=15, le=180)
+
 
 @app.get("/")
 def home():
     return {
         "project": "PROJECT YOUTUBE AI",
-        "status": "running",
-        "version": "1.0.0"
+        "status": "running"
     }
+
 
 @app.get("/health")
 def health():
     return {
-        "status": "healthy",
-        "backend": "online"
+        "backend": "online",
+        "ai_connected": ai_gateway.is_connected()
     }
+
 
 @app.get("/api/status")
 def system_status():
     return {
-        "research_ai": "not_connected",
-        "script_ai": "not_connected",
-        "video_ai": "not_connected",
-        "youtube_api": "not_connected"
+        "research_ai": "pending",
+        "script_ai": (
+            "connected" if ai_gateway.is_connected()
+            else "not_connected"
+        ),
+        "video_ai": "pending",
+        "youtube_api": "pending"
     }
+
 
 @app.post("/api/script")
 def generate_script(request: ScriptRequest):
-    if not request.topic.strip():
-        return {"error": "Topic is required"}
+
+    prompt = f"""
+Create a professional YouTube Shorts script.
+
+Topic: {request.topic}
+Language: {request.language}
+Duration: {request.duration} seconds.
+
+Requirements:
+- Strong opening hook.
+- Interesting factual storytelling.
+- Clear and engaging narration.
+- Strong ending.
+- Do not invent historical facts.
+- Separate narration and visual suggestions.
+"""
+
+    result = ai_gateway.generate(prompt)
+
+    if not result["success"]:
+        raise HTTPException(
+            status_code=503,
+            detail=result["error"]
+        )
 
     return {
-        "status": "waiting_for_ai",
+        "status": "success",
         "topic": request.topic,
-        "language": request.language,
-        "duration": request.duration,
-        "message": "AI provider must be connected."
+        "script": result["content"]
     }
+
