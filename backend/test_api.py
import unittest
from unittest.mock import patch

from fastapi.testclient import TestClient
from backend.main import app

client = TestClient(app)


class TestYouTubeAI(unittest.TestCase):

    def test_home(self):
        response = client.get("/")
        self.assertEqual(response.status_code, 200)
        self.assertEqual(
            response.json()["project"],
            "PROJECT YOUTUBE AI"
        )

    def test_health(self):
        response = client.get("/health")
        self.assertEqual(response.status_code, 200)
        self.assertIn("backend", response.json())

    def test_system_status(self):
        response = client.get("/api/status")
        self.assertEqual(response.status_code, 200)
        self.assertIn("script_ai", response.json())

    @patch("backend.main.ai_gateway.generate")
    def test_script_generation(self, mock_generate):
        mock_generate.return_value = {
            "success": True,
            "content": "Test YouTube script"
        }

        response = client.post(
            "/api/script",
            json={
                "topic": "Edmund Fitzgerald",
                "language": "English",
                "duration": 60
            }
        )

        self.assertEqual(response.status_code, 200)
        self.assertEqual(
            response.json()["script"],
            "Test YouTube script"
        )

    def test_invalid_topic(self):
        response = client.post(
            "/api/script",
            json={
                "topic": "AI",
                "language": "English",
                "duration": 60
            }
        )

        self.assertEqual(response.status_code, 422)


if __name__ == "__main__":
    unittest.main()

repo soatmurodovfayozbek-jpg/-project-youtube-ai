@@ -1,0 +1,67 @@
+
+import unittest
+from unittest.mock import patch
+
+from fastapi.testclient import TestClient
+from backend.main import app
+
+client = TestClient(app)
+
+
+class TestYouTubeAI(unittest.TestCase):
+
+    def test_home(self):
+        response = client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json()["project"],
+            "PROJECT YOUTUBE AI"
+        )
+
+    def test_health(self):
+        response = client.get("/health")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("backend", response.json())
+
+    def test_system_status(self):
+        response = client.get("/api/status")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("script_ai", response.json())
+
+    @patch("backend.main.ai_gateway.generate")
+    def test_script_generation(self, mock_generate):
+        mock_generate.return_value = {
+            "success": True,
+            "content": "Test YouTube script"
+        }
+
+        response = client.post(
+            "/api/script",
+            json={
+                "topic": "Edmund Fitzgerald",
+                "language": "English",
+                "duration": 60
+            }
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json()["script"],
+            "Test YouTube script"
+        )
+
+    def test_invalid_topic(self):
+        response = client.post(
+            "/api/script",
+            json={
+                "topic": "AI",
+                "language": "English",
+                "duration": 60
+            }
+        )
+
+        self.assertEqual(response.status_code, 422)
+
+
+if __name__ == "__main__":
+    unittest.main()
